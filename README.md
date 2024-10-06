@@ -1,1 +1,1 @@
-# Computer_Architectur_Labs
+# Computer_Architecture_Labs
