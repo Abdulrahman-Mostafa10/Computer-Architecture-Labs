@@ -20,14 +20,14 @@ ARCHITECTURE alu1 OF alu IS
         );
     END COMPONENT;
 
-    -- COMPONENT Unit_C
-    --     PORT (
-    --         A : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-    --         Cin : IN STD_LOGIC;
-    --         Sel : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-    --         F : OUT STD_LOGIC_VECTOR(8 DOWNTO 0);
-    --     );
-    -- END COMPONENT;
+    COMPONENT Unit_C
+        PORT (
+            A : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+            Cin : IN STD_LOGIC;
+            Sel : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+            F : OUT STD_LOGIC_VECTOR(8 DOWNTO 0)
+        );
+    END COMPONENT;
 
     COMPONENT Unit_D
         PORT (
@@ -55,7 +55,7 @@ BEGIN
 
     -- ua : Unit_A PORT MAP(A, B, Cin, Sel(1 DOWNTO 0), DATA_A);
     ub : Unit_B PORT MAP(A, B, Cin, Sel(1 DOWNTO 0), DATA_B);
-    -- uc : Unit_C PORT MAP(A, Cin, Sel(1 DOWNTO 0), DATA_C);
+    uc : Unit_C PORT MAP(A, Cin, Sel(1 DOWNTO 0), DATA_C);
     ud : Unit_D PORT MAP(A, Cin, Sel(1 DOWNTO 0), DATA_D);
 
     mux : mux_4x1 PORT MAP(DATA_B, DATA_B, DATA_D, DATA_D, Sel(3 DOWNTO 2), MUX_F);
