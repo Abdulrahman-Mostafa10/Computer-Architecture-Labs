@@ -4,7 +4,6 @@ USE ieee.std_logic_1164.ALL;
 ENTITY Unit_B IS
     PORT (
         A, B : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
-        Cin : IN STD_LOGIC;
         SEL : IN STD_LOGIC_VECTOR (1 DOWNTO 0);
         DATA : OUT STD_LOGIC_VECTOR (8 DOWNTO 0)
     );

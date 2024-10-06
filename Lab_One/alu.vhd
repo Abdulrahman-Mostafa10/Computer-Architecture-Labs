@@ -14,7 +14,6 @@ ARCHITECTURE alu1 OF alu IS
     COMPONENT Unit_B
         PORT (
             A, B : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-            Cin : IN STD_LOGIC;
             SEL : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
             DATA : OUT STD_LOGIC_VECTOR(8 DOWNTO 0)
         );
@@ -24,8 +23,8 @@ ARCHITECTURE alu1 OF alu IS
         PORT (
             A : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
             Cin : IN STD_LOGIC;
-            Sel : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-            F : OUT STD_LOGIC_VECTOR(8 DOWNTO 0)
+            SEL : IN STD_LOGIC_VECTOR (1 DOWNTO 0);
+            DATA : OUT STD_LOGIC_VECTOR (8 DOWNTO 0)
         );
     END COMPONENT;
 
@@ -45,20 +44,15 @@ ARCHITECTURE alu1 OF alu IS
             Out1 : OUT STD_LOGIC_VECTOR (8 DOWNTO 0));
     END COMPONENT;
 
-    --    SIGNAL DATA_A : STD_LOGIC_VECTOR(8 DOWNTO 0);
-    SIGNAL DATA_B : STD_LOGIC_VECTOR(8 DOWNTO 0);
-    SIGNAL DATA_C : STD_LOGIC_VECTOR(8 DOWNTO 0);
-    SIGNAL DATA_D : STD_LOGIC_VECTOR(8 DOWNTO 0);
-    SIGNAL MUX_F : STD_LOGIC_VECTOR(8 DOWNTO 0);
+    SIGNAL DATA_B, DATA_C, DATA_D, MUX_F : STD_LOGIC_VECTOR(8 DOWNTO 0);
 
 BEGIN
 
-    -- ua : Unit_A PORT MAP(A, B, Cin, Sel(1 DOWNTO 0), DATA_A);
-    ub : Unit_B PORT MAP(A, B, Cin, Sel(1 DOWNTO 0), DATA_B);
+    ub : Unit_B PORT MAP(A, B, Sel(1 DOWNTO 0), DATA_B);
     uc : Unit_C PORT MAP(A, Cin, Sel(1 DOWNTO 0), DATA_C);
     ud : Unit_D PORT MAP(A, Cin, Sel(1 DOWNTO 0), DATA_D);
 
-    mux : mux_4x1 PORT MAP(DATA_B, DATA_B, DATA_D, DATA_D, Sel(3 DOWNTO 2), MUX_F);
+    mux : mux_4x1 PORT MAP(DATA_B, DATA_B, DATA_C, DATA_D, Sel(3 DOWNTO 2), MUX_F);
     F <= MUX_F(7 DOWNTO 0);
     Cout <= MUX_F(8);
 END alu1;

@@ -3,7 +3,7 @@ USE ieee.std_Logic_1164.ALL;
 
 ENTITY Unit_C IS
     PORT (
-        A, B : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+        A : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
         Cin : IN STD_LOGIC;
         SEL : IN STD_LOGIC_VECTOR (1 DOWNTO 0);
         DATA : OUT STD_LOGIC_VECTOR (8 DOWNTO 0)
@@ -12,7 +12,7 @@ END ENTITY Unit_C;
 
 ARCHITECTURE Unit_C_Dataflow OF Unit_C IS
 BEGIN
-    PROCESS (A, B, Cin, SEL)
+    PROCESS (A, Cin, SEL)
     BEGIN
 
         CASE SEL IS
