@@ -5,17 +5,17 @@ ENTITY Unit_C IS
     PORT (
         A : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
         Cin : IN STD_LOGIC;
-        SEL : IN STD_LOGIC_VECTOR (1 DOWNTO 0);
+        Sel : IN STD_LOGIC_VECTOR (1 DOWNTO 0);
         DATA : OUT STD_LOGIC_VECTOR (8 DOWNTO 0)
     );
 END ENTITY Unit_C;
 
 ARCHITECTURE Unit_C_Dataflow OF Unit_C IS
 BEGIN
-    PROCESS (A, Cin, SEL)
+    PROCESS (A, Cin, Sel)
     BEGIN
 
-        CASE SEL IS
+        CASE Sel IS
             WHEN "00" =>
                 DATA(8) <= A(7);
                 DATA(7 DOWNTO 0) <= A(6 DOWNTO 0) & '0';
