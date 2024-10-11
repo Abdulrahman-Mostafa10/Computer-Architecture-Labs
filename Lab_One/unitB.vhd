@@ -12,11 +12,11 @@ END ENTITY Unit_B;
 
 ARCHITECTURE Unit_B_Dataflow OF Unit_B IS
 BEGIN
-    DATA(n - 1 DOWNTO 0) <= (A OR B) WHEN Sel(0) = '0' AND Sel(1) = '0'
+    DATA(n - 1 DOWNTO 0) <= (A XOR B) WHEN Sel(0) = '0' AND Sel(1) = '0'
 ELSE
-    (A AND B) WHEN Sel(1) = '0' AND Sel(0) = '1'
+    (A NAND B) WHEN Sel(1) = '0' AND Sel(0) = '1'
 ELSE
-    (A NOR B) WHEN Sel(1) = '1' AND Sel(0) = '0'
+    (A OR B) WHEN Sel(1) = '1' AND Sel(0) = '0'
 ELSE
     (NOT A) WHEN Sel(1) = '1' AND Sel(0) = '1'
 ELSE
