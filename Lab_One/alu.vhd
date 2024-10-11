@@ -2,6 +2,7 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 
 ENTITY alu IS
+    GENERIC (n : INTEGER := 8);
     PORT (
         A, B : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
         Cin : IN STD_LOGIC;
@@ -21,6 +22,7 @@ ARCHITECTURE alu1 OF alu IS
         );
     END COMPONENT;
     COMPONENT Unit_B
+        GENERIC (n : INTEGER := 8);
         PORT (
             A, B : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
             Sel : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
@@ -29,6 +31,7 @@ ARCHITECTURE alu1 OF alu IS
     END COMPONENT;
 
     COMPONENT Unit_C
+        GENERIC (n : INTEGER := 8);
         PORT (
             A : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
             Cin : IN STD_LOGIC;
@@ -38,6 +41,7 @@ ARCHITECTURE alu1 OF alu IS
     END COMPONENT;
 
     COMPONENT Unit_D
+        GENERIC (n : INTEGER := 8);
         PORT (
             A : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
             Cin : IN STD_LOGIC;
