@@ -2,39 +2,33 @@ vsim -gui work.alu
 
 add wave -position insertpoint sim:/alu/*
 
-force -freeze sim:/alu/Sel 0000 0
 
 force -freeze sim:/alu/A 11110000 0
 force -freeze sim:/alu/B 10110000 0
-
+force -freeze sim:/alu/Sel 0000 0
 force -freeze sim:/alu/Cin 0 0
 run
 
+force -freeze sim:/alu/Sel 0001 0
+run
+
+force -freeze sim:/alu/Sel 0010 0
+run
+
+force -freeze sim:/alu/Sel 0011 0
+run
+
+force -freeze sim:/alu/Sel 0000 0
 force -freeze sim:/alu/Cin 1 0
 run
 
 force -freeze sim:/alu/Sel 0001 0
-
-force -freeze sim:/alu/Cin 0 0
-run
-
-force -freeze sim:/alu/Cin 1 0
 run
 
 force -freeze sim:/alu/Sel 0010 0
-
-force -freeze sim:/alu/Cin 0 0
-run
-
-force -freeze sim:/alu/Cin 1 0
 run
 
 force -freeze sim:/alu/Sel 0011 0
-
-force -freeze sim:/alu/Cin 0 0
-run
-
-force -freeze sim:/alu/Cin 1 0
 run
 
 force -freeze sim:/alu/Sel 0100 0
