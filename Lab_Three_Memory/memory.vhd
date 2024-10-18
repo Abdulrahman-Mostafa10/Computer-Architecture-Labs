@@ -1,12 +1,18 @@
-LIBRARY iee
-USE iee.std_logic_1164.ALL;
-USE iee.numeric_std.ALL;
+LIBRARY IEEE;
+USE IEEE.std_logic_1164.ALL;
+USE IEEE.numeric_std.ALL;
 
 ENTITY memory IS
     PORT (
-        we, clk, reset : IN STD_LOGIC;
-        w_addr, r_addr0, r_addr1 : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
-        write_data, read_data0, read_data1 : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+        we : IN STD_LOGIC;
+        clk : IN STD_LOGIC;
+        reset : IN STD_LOGIC;
+        w_addr : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+        r_addr0 : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+        r_addr1 : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+        write_data : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+        read_data0 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+        read_data1 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
     );
 END memory;
 
@@ -20,11 +26,10 @@ BEGIN
             mem <= (OTHERS => (OTHERS => '0'));
         ELSIF rising_edge(clk) THEN
             IF we = '1' THEN
-                mem(to_integer(unsigned((w_addr)))) <= write_data;
+                mem(to_integer(unsigned(w_addr))) <= write_data;
             END IF;
         END IF;
-    END PROCESS
-    read_data0 <= mem(to_integer(unsigned((r_addr0))));
-    read_data1 <= mem(to_integer(unsigned((r_addr1))));
-
+    END PROCESS;
+    read_data0 <= mem(to_integer(unsigned(r_addr0)));
+    read_data1 <= mem(to_integer(unsigned(r_addr1)));
 END Behavioral;
