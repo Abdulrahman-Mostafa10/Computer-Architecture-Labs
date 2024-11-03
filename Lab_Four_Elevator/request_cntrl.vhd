@@ -1,11 +1,11 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
 
-entity rq_ctrl is
-    Port (
+ENTITY rq_ctrl IS
+    PORT (
     );
-end rq_ctrl;
+END rq_ctrl;
 
-architecture Behavioral of rq_ctrl is
+ARCHITECTURE Behavioral OF rq_ctrl IS
 
-end Behavioral;
+END Behavioral;

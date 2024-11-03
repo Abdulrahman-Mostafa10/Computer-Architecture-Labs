@@ -1,28 +1,31 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.STD_LOGIC_ARITH.ALL;
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity mv_ctrl is
-    Port (
-        clk : in STD_LOGIC;
-        clk_en : out STD_LOGIC;
+ENTITY mv_ctrl IS
+    PORT (
+        clk : IN STD_LOGIC;
+        clk_out : OUT STD_LOGIC
     );
-end mv_ctrl;
+END mv_ctrl;
 
-architecture Behavioral of mv_ctrl is
-    signal cnt : integer range 0 to 5000000 := 0;
-    
-begin
-    process(clk)
-    begin 
-    if rising_edge(clk) then
-        if cnt = 5000000 then
-            clk_en <= '1';
-            cnt <= 0;
-        else
-            cnt <= cnt + 1;
-            clk_en <= '0';
-        end if;
-    end if;
-    end process;
+ARCHITECTURE Behavioral OF mv_ctrl IS
+    SIGNAL cnt : INTEGER RANGE 0 TO 25000000 := 0;
+    SIGNAL clk_out_reg : STD_LOGIC := '0';
+BEGIN
+    PROCESS (clk)
+    BEGIN
+        IF rising_edge(clk) THEN
+            IF cnt = 25000000 THEN
+                cnt <= 0;
+                clk_out_reg <= NOT clk_out_reg;
+            ELSE
+                cnt <= cnt + 1;
+            END IF;
+        END IF;
+    END PROCESS;
 
-end Behavioral;
+    clk_out <= clk_out_reg;
+
+END Behavioral;

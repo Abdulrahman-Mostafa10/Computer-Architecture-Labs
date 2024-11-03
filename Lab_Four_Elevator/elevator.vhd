@@ -1,11 +1,11 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
 
-entity elevator is
-    Port (
+ENTITY elevator IS
+    PORT (
     );
-end elevator;
+END elevator;
 
-architecture Behavioral of elevator is
+ARCHITECTURE Behavioral OF elevator IS
 
-end Behavioral;
+END Behavioral;
