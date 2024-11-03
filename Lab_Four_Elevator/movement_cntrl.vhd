@@ -1,11 +1,11 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
 
-entity mv_ctrl is
-    Port (
+ENTITY mv_ctrl IS
+    PORT (
     );
-end mv_ctrl;
+END mv_ctrl;
 
-architecture Behavioral of mv_ctrl is
+ARCHITECTURE Behavioral OF mv_ctrl IS
 
-end Behavioral;
+END Behavioral;
