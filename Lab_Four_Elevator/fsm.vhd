@@ -1,14 +1,15 @@
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.STD_LOGIC_ARITH.ALL;
-USE IEEE.STDLOGIC_UNSIGNED.ALL;
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 ENTITY fsm IS
+    GENERIC (n : INTEGER := 10);
     PORT (
         reset : IN STD_LOGIC;
         clk : IN STD_LOGIC;
-        requested_next_floor : IN STD_LOGIC_VECTOR (9 DOWNTO 0);
-        reached_floor : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
+        requested_next_floor : IN STD_LOGIC_VECTOR (n - 1 DOWNTO 0);
+        reached_floor : OUT STD_LOGIC_VECTOR(n - 1 DOWNTO 0);
         direction_action : OUT STD_LOGIC
     );
 END fsm;
@@ -16,20 +17,20 @@ END fsm;
 ARCHITECTURE Behavioral OF fsm IS
     TYPE fsm_state_type IS
     (up, down, opened, closed);
-    VARIABLE old_direction : STD_LOGIC := 1;
-    VARIABLE clk_counter : STD_LOGIC(1 DOWNTO 0) := 00;
-    VARIABLE current_floor : STD_LOGIC_VECTOR(9 DOWNTO 0) := 0000000000;
-    SIGNAL state_reg, state_next : fsm_state_type
+    SIGNAL old_direction : STD_LOGIC := '1';
+    SIGNAL clk_counter : STD_LOGIC := '0';
+    SIGNAL current_floor : STD_LOGIC_VECTOR(n - 1 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL state_reg, state_next : fsm_state_type;
 BEGIN
     dff : PROCESS (clk, reset)
     BEGIN
         IF (reset = '1') THEN
-            current_floor := 0000000000;
+            current_floor <= (OTHERS => '0');
         ELSIF (rising_edge(clk)) THEN
             IF (clk_counter = '0') THEN
-                clk_counter := clk_counter + 1;
+                clk_counter <= '1';
             ELSE
-                clk_counter := 0;
+                clk_counter <= '0';
                 state_reg <= state_next;
             END IF;
         END IF;
@@ -37,29 +38,46 @@ BEGIN
 
     evaluate_state : PROCESS (state_reg, requested_next_floor)
     BEGIN
-        reached_floor <= old_direction;
+        reached_floor <= current_floor;
         CASE state_reg IS
-            WHEN close =>
+            WHEN closed =>
                 IF (requested_next_floor > current_floor) THEN
-                    state_next <= UP;
+                    state_next <= up;
+                    old_direction <= '1';
+                    direction_action <= '1';
+                    current_floor <= current_floor + 1;
                 ELSIF (requested_next_floor = reached_floor) THEN
-                    state_next <= close;
+                    state_next <= closed;
+                    direction_action <= old_direction;
                 ELSE
                     state_next <= down;
+                    old_direction <= '0';
+                    direction_action <= '0';
+                    current_floor <= current_floor - 1;
                 END IF;
             WHEN up =>
                 IF (requested_next_floor = reached_floor) THEN
                     state_next <= opened;
+                    direction_action <= old_direction;
                 ELSIF (requested_next_floor > reached_floor) THEN
                     state_next <= up;
+                    old_direction <= '1';
+                    direction_action <= '1';
+                    current_floor <= current_floor + 1;
                 END IF;
             WHEN down =>
                 IF (requested_next_floor = reached_floor) THEN
                     state_next <= opened;
+                    direction_action <= old_direction;
                 ELSIF (requested_next_floor < reached_floor) THEN
                     state_next <= down;
+                    old_direction <= '0';
+                    direction_action <= '0';
+                    current_floor <= current_floor - 1;
                 END IF;
-            WHEN OPEN =>
-                state_reg <= close;
+            WHEN opened =>
+                state_next <= closed;
+                direction_action <= old_direction;
         END CASE;
+        reached_floor <= current_floor;
     END PROCESS
