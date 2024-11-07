@@ -4,6 +4,7 @@ USE IEEE.STD_LOGIC_ARITH.ALL;
 USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 ENTITY mv_ctrl IS
+
     PORT (
         clk : IN STD_LOGIC;
         clk_out : OUT STD_LOGIC
@@ -11,13 +12,14 @@ ENTITY mv_ctrl IS
 END mv_ctrl;
 
 ARCHITECTURE Behavioral OF mv_ctrl IS
-    SIGNAL cnt : INTEGER RANGE 0 TO 25000000 := 0;
+    CONSTANT half_cycle : INTEGER := 25_000_000;
+    SIGNAL cnt : INTEGER RANGE 0 TO half_cycle - 1 := 0;
     SIGNAL clk_out_reg : STD_LOGIC := '0';
 BEGIN
     PROCESS (clk)
     BEGIN
         IF rising_edge(clk) THEN
-            IF cnt = 25000000 THEN
+            IF cnt = half_cycle - 1 THEN
                 cnt <= 0;
                 clk_out_reg <= NOT clk_out_reg;
             ELSE
