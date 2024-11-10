@@ -73,7 +73,7 @@ BEGIN
         NUM_BITS => NUM_BITS
     )
     PORT MAP(
-        clk => clk,
+        clk => clk_out,
         reset => reset,
         is_moving_up => is_moving_up_action,
         request => request,

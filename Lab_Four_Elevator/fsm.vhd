@@ -84,13 +84,15 @@ BEGIN
             CASE state_reg IS
                 WHEN closed =>
                     IF (TO_INTEGER(unsigned(requested_next_floor)) > current_floor_dff_internal_signal) THEN
+                        state_next <= up;
                         is_moving_up_evaluate_internal_signal <= '1'; -- Enable Moving up
                         is_moving_down_evaluate_internal_signal <= '0'; -- Disable Moving down
-                        state_next <= up;
+                        is_door_open_evaluate_internal_signal <= '0'; -- Close the door
                     ELSIF (TO_INTEGER(unsigned(requested_next_floor)) < current_floor_dff_internal_signal) THEN
+                        state_next <= down;
                         is_moving_up_evaluate_internal_signal <= '0'; -- Disable Moving up
                         is_moving_down_evaluate_internal_signal <= '1'; -- Enable Moving down
-                        state_next <= down;
+                        is_door_open_evaluate_internal_signal <= '0'; -- Close the door
                     END IF;
 
                 WHEN up =>
@@ -98,29 +100,34 @@ BEGIN
                         state_next <= opened; -- Arrived at requested floor
                         is_moving_up_evaluate_internal_signal <= '0'; -- Stop moving up
                         is_door_open_evaluate_internal_signal <= '1'; -- Open the door
+                        is_moving_down_evaluate_internal_signal <= '0'; -- Enable Moving down
                         next_floor_evaluate_internal_signal <= current_floor_dff_internal_signal; -- Increment floor
                     ELSE
                         is_moving_up_evaluate_internal_signal <= '1'; -- Continue Moving up
+                        is_moving_down_evaluate_internal_signal <= '0'; -- Disable Moving down
+                        is_door_open_evaluate_internal_signal <= '0'; -- Close the door
                         next_floor_evaluate_internal_signal <= current_floor_dff_internal_signal + 1; -- Increment floor
                     END IF;
 
                 WHEN down =>
                     IF (TO_INTEGER(unsigned(requested_next_floor)) = current_floor_dff_internal_signal) THEN
                         state_next <= opened; -- Arrived at requested floor
+                        is_moving_up_evaluate_internal_signal <= '0'; -- Disable Moving up
                         is_moving_down_evaluate_internal_signal <= '0'; -- Stop moving down
                         is_door_open_evaluate_internal_signal <= '1'; -- Open the door
                         next_floor_evaluate_internal_signal <= current_floor_dff_internal_signal;
-                    ELSIF (TO_INTEGER(unsigned(requested_next_floor)) = 0) THEN
-                        is_moving_down_evaluate_internal_signal <= '1'; -- Continue Moving up
-                        next_floor_evaluate_internal_signal <= 0; -- Increment floor
                     ELSE
                         is_moving_down_evaluate_internal_signal <= '1'; -- Continue Moving down
+                        is_moving_up_evaluate_internal_signal <= '0'; -- Disable Moving up
+                        is_door_open_evaluate_internal_signal <= '0'; -- Close the door
                         next_floor_evaluate_internal_signal <= current_floor_dff_internal_signal - 1; -- Decrement floor
                     END IF;
 
                 WHEN opened =>
                     state_next <= closed; -- After opening, close the door
                     is_door_open_evaluate_internal_signal <= '0'; -- Close the door
+                    is_moving_up_evaluate_internal_signal <= '0'; -- Disable Moving up
+                    is_moving_down_evaluate_internal_signal <= '0'; -- Disable Moving down
 
                 WHEN OTHERS =>
                     state_next <= closed; -- Default case to avoid latch-up
