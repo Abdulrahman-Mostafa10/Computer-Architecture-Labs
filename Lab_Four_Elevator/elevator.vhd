@@ -20,12 +20,6 @@ END elevator;
 
 ARCHITECTURE Behavioral OF elevator IS
 
-    COMPONENT timer IS
-        PORT (
-            clk : IN STD_LOGIC;
-            clk_out : OUT STD_LOGIC
-        );
-    END COMPONENT;
     COMPONENT request_solver IS
         GENERIC (
             NUM_FLOORS : INTEGER := 10;
@@ -65,11 +59,6 @@ ARCHITECTURE Behavioral OF elevator IS
     SIGNAL current_floor_inside : STD_LOGIC_VECTOR(NUM_BITS - 1 DOWNTO 0) := (OTHERS => '0');
 
 BEGIN
-    timer_inst : timer
-    PORT MAP(
-        clk => clk,
-        clk_out => clk_out
-    );
     request_solver_inst : request_solver
     GENERIC MAP(
         NUM_FLOORS => NUM_FLOORS,
@@ -91,7 +80,7 @@ BEGIN
     )
     PORT MAP(
         reset => reset,
-        clk => clk_out,
+        clk => clk,
         requested_next_floor => next_floor,
         reached_floor => current_floor_inside,
         direction_action => direction_action,
