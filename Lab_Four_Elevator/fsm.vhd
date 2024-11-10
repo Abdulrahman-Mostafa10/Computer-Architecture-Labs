@@ -110,6 +110,9 @@ BEGIN
                         is_moving_down_evaluate_internal_signal <= '0'; -- Stop moving down
                         is_door_open_evaluate_internal_signal <= '1'; -- Open the door
                         next_floor_evaluate_internal_signal <= current_floor_dff_internal_signal;
+                    ELSIF (TO_INTEGER(unsigned(requested_next_floor)) = 0) THEN
+                        is_moving_down_evaluate_internal_signal <= '1'; -- Continue Moving up
+                        next_floor_evaluate_internal_signal <= 0; -- Increment floor
                     ELSE
                         is_moving_down_evaluate_internal_signal <= '1'; -- Continue Moving down
                         next_floor_evaluate_internal_signal <= current_floor_dff_internal_signal - 1; -- Decrement floor

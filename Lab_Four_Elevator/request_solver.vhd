@@ -23,7 +23,6 @@ ARCHITECTURE Behavioral OF request_solver IS
     SIGNAL floors_bit_set : STD_LOGIC_VECTOR(NUM_FLOORS - 1 DOWNTO 0) := (OTHERS => '0'); -- Bit set for requested floors
     SIGNAL next_floor_reg : STD_LOGIC_VECTOR(NUM_BITS - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL last_requested_floor : STD_LOGIC_VECTOR(NUM_BITS - 1 DOWNTO 0) := (OTHERS => '0');
-    SIGNAL last_direction : STD_LOGIC := '0'; -- Last direction signal to be used in the process
 BEGIN
 
     -- Assign next_floor signal at the end of the process to propagate changes
