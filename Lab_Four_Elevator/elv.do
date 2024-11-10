@@ -234,3 +234,20 @@ run
 run
 run
 run
+force -freeze sim:/elevator/request 0001 0
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run

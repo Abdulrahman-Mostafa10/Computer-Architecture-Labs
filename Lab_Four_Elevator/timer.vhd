@@ -12,7 +12,7 @@ ENTITY mv_ctrl IS
 END mv_ctrl;
 
 ARCHITECTURE Behavioral OF mv_ctrl IS
-    CONSTANT half_cycle : INTEGER := 2;
+    CONSTANT half_cycle : INTEGER := 25_000_000; -- 50 MHz / 2 = 25 MHz
     SIGNAL cnt : INTEGER RANGE 0 TO half_cycle - 1 := 0;
     SIGNAL clk_out_reg : STD_LOGIC := '0';
 BEGIN
