@@ -23,6 +23,7 @@ ARCHITECTURE Behavioral OF request_solver IS
     SIGNAL floors_bit_set : STD_LOGIC_VECTOR(NUM_FLOORS - 1 DOWNTO 0) := (OTHERS => '0'); -- Bit set for requested floors
     SIGNAL next_floor_reg : STD_LOGIC_VECTOR(NUM_BITS - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL last_requested_floor : STD_LOGIC_VECTOR(NUM_BITS - 1 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL last_sent_floor : STD_LOGIC_VECTOR(NUM_BITS - 1 DOWNTO 0) := (OTHERS => '0'); -- Last sent to fsm
 BEGIN
 
     -- Assign next_floor signal at the end of the process to propagate changes
@@ -42,48 +43,57 @@ BEGIN
         ELSIF rising_edge(clk) THEN
             current_floor_integer := to_integer(unsigned(current_floor)); -- Convert current_floor to an integer
             found_floor := current_floor_integer; -- Initialize the found_floor variable to the current floor
-            floors_bit_set(current_floor_integer) <= '0'; -- Mark the requested floor in floors_bit_set
             -- Check upper floors if the elevator is moving up
             IF is_moving_up = '1' THEN
                 -- Search for higher floors
-                FOR i IN current_floor_integer + 1 TO NUM_FLOORS - 1 LOOP
-                    IF floors_bit_set(i) = '1' THEN
-                        found_floor := i;
-                        EXIT;
-                    END IF;
-                END LOOP;
-
-                -- If no higher floor request is found, check lower floors
-                IF found_floor = current_floor_integer THEN
-                    FOR i IN current_floor_integer - 1 DOWNTO 0 LOOP
-                        IF floors_bit_set(i) = '1' THEN
-                            found_floor := i;
-                            EXIT;
-                        END IF;
-                    END LOOP;
-                END IF;
-            ELSE
-                -- Check lower floors if the elevator is moving down
-                FOR i IN current_floor_integer - 1 DOWNTO 0 LOOP
-                    IF floors_bit_set(i) = '1' THEN
-                        found_floor := i;
-                        EXIT;
-                    END IF;
-                END LOOP;
-
-                -- If no lower floor request is found, check higher floors
-                IF found_floor = current_floor_integer THEN
+                IF floors_bit_set(current_floor_integer) = '1' THEN
+                    found_floor := current_floor_integer;
+                ELSE
                     FOR i IN current_floor_integer + 1 TO NUM_FLOORS - 1 LOOP
                         IF floors_bit_set(i) = '1' THEN
                             found_floor := i;
                             EXIT;
                         END IF;
                     END LOOP;
+
+                    -- If no higher floor request is found, check lower floors
+                    IF found_floor = current_floor_integer THEN
+                        FOR i IN current_floor_integer - 1 DOWNTO 0 LOOP
+                            IF floors_bit_set(i) = '1' THEN
+                                found_floor := i;
+                                EXIT;
+                            END IF;
+                        END LOOP;
+                    END IF;
+                END IF;
+            ELSE
+
+                IF floors_bit_set(current_floor_integer) = '1' THEN
+                    found_floor := current_floor_integer;
+                ELSE
+                    -- Check lower floors if the elevator is moving down
+                    FOR i IN current_floor_integer - 1 DOWNTO 0 LOOP
+                        IF floors_bit_set(i) = '1' THEN
+                            found_floor := i;
+                            EXIT;
+                        END IF;
+                    END LOOP;
+
+                    -- If no lower floor request is found, check higher floors
+                    IF found_floor = current_floor_integer THEN
+                        FOR i IN current_floor_integer + 1 TO NUM_FLOORS - 1 LOOP
+                            IF floors_bit_set(i) = '1' THEN
+                                found_floor := i;
+                                EXIT;
+                            END IF;
+                        END LOOP;
+                    END IF;
                 END IF;
             END IF;
-
             -- Set the next floor output using proper signal assignment
+            floors_bit_set(current_floor_integer) <= '0'; -- Mark the requested floor in floors_bit_set
             next_floor_reg <= STD_LOGIC_VECTOR(to_unsigned(found_floor, NUM_BITS));
+            last_sent_floor <= STD_LOGIC_VECTOR(to_unsigned(found_floor, NUM_BITS));
         END IF;
     END PROCESS;
 
