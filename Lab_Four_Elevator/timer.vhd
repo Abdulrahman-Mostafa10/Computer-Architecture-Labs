@@ -3,15 +3,15 @@ USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.STD_LOGIC_ARITH.ALL;
 USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-ENTITY mv_ctrl IS
+ENTITY timer IS
 
     PORT (
         clk : IN STD_LOGIC;
         clk_out : OUT STD_LOGIC
     );
-END mv_ctrl;
+END timer;
 
-ARCHITECTURE Behavioral OF mv_ctrl IS
+ARCHITECTURE Behavioral OF timer IS
     CONSTANT half_cycle : INTEGER := 25_000_000; -- 50 MHz / 2 = 25 MHz
     SIGNAL cnt : INTEGER RANGE 0 TO half_cycle - 1 := 0;
     SIGNAL clk_out_reg : STD_LOGIC := '0';
