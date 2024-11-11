@@ -4,7 +4,7 @@ add wave -position insertpoint sim:/request_solver/*
 # convert the radix of the current floor
 radix signal sim:/request_solver/current_floor unsigned
 
-#initalize clock 
+# initalize clock 
 force -freeze sim:/request_solver/clk 1 0, 0 {50 ns} -r {100 ns}
 
 # reset the system

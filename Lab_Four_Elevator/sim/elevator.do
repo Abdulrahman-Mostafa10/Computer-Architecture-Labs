@@ -1,7 +1,7 @@
 vsim -gui work.elevator
 add wave -position insertpoint sim:/elevator/*
 
-#initalize clock 
+# initalize clock 
 force -freeze sim:/elevator/clk 1 0, 0 {50 ns} -r {100 ns}
 
 # reset the system

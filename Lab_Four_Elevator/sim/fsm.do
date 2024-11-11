@@ -1,7 +1,7 @@
 vsim -gui work.fsm
 add wave -position insertpoint sim:/fsm/*
 
-#initalize clock 
+# initalize clock 
 force -freeze sim:/fsm/clk 1 0, 0 {50 ns} -r {100 ns}
 
 # reset system
