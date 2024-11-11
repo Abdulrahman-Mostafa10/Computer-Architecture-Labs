@@ -6,7 +6,7 @@ USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 ENTITY elevator_tb IS
 END elevator_tb;
 
-ARCHITECTURE behavior OF elevator_tb IS
+ARCHITECTURE Behavioral OF elevator_tb IS
 
     -- Component Declaration for the Unit Under Test (UUT)
     COMPONENT elevator
@@ -92,4 +92,4 @@ BEGIN
         WAIT;
     END PROCESS;
 
-END;
+END Behavioral;
