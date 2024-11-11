@@ -6,7 +6,7 @@ USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 ENTITY elevator_tb IS
 END elevator_tb;
 
-ARCHITECTURE behavior OF elevator_tb IS
+ARCHITECTURE Behavioral OF elevator_tb IS
 
     -- Clock period
     CONSTANT clk_period : TIME := 10 ns;
@@ -89,4 +89,4 @@ BEGIN
         WAIT;
     END PROCESS;
 
-END behavior;
+END Behavioral;

@@ -4,7 +4,7 @@ USE IEEE.STD_LOGIC_1164.ALL;
 ENTITY custom_elevator_tb IS
 END custom_elevator_tb;
 
-ARCHITECTURE behavior OF custom_elevator_tb IS
+ARCHITECTURE Behavioral OF custom_elevator_tb IS
 
     -- Clock period for 50 MHz frequency
     CONSTANT clk_period : TIME := 20 ns;
@@ -78,4 +78,4 @@ BEGIN
         WAIT;
     END PROCESS;
 
-END behavior;
+END Behavioral;

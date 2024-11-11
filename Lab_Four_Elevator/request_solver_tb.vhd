@@ -5,7 +5,7 @@ USE IEEE.NUMERIC_STD.ALL;
 ENTITY request_solver_tb IS
 END request_solver_tb;
 
-ARCHITECTURE behavior OF request_solver_tb IS
+ARCHITECTURE Behavioral OF request_solver_tb IS
 
     -- Clock period
     CONSTANT clk_period : TIME := 10 ns;
@@ -95,4 +95,4 @@ BEGIN
         WAIT;
     END PROCESS;
 
-END behavior;
+END Behavioral;
