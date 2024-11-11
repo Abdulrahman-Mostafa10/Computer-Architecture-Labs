@@ -8,7 +8,18 @@ END elevator_tb;
 
 ARCHITECTURE Behavioral OF elevator_tb IS
 
-    -- Component Declaration for the Unit Under Test (UUT)
+    -- Clock period
+    CONSTANT clk_period : TIME := 10 ns;
+
+    SIGNAL clk : STD_LOGIC := '0';
+    SIGNAL reset : STD_LOGIC := '0';
+    SIGNAL request : STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0');
+
+    SIGNAL current_floor : STD_LOGIC_VECTOR(3 DOWNTO 0);
+    SIGNAL is_moving_up : STD_LOGIC;
+    SIGNAL is_moving_down : STD_LOGIC;
+    SIGNAL is_door_open : STD_LOGIC;
+
     COMPONENT elevator
         GENERIC (
             NUM_FLOORS : INTEGER := 10;
@@ -26,26 +37,17 @@ ARCHITECTURE Behavioral OF elevator_tb IS
         );
     END COMPONENT;
 
-    -- Testbench Signals
-    SIGNAL clk : STD_LOGIC := '0';
-    SIGNAL reset : STD_LOGIC := '0';
-    SIGNAL request : STD_LOGIC_VECTOR(3 DOWNTO 0) := "0000";
-    SIGNAL current_floor : STD_LOGIC_VECTOR(3 DOWNTO 0);
-    SIGNAL is_moving_up : STD_LOGIC;
-    SIGNAL is_moving_down : STD_LOGIC;
-    SIGNAL is_door_open : STD_LOGIC;
-
-    -- Clock period definition
-    CONSTANT clk_period : TIME := 100 ps;
-
 BEGIN
-    -- Instantiate the Unit Under Test (UUT)
+
     uut : elevator
+    GENERIC MAP(
+        NUM_FLOORS => 10,
+        NUM_BITS => 4
+    )
     PORT MAP(
         clk => clk,
         reset => reset,
         request => request,
-
         current_floor => current_floor,
         is_moving_up => is_moving_up,
         is_moving_down => is_moving_down,
@@ -61,34 +63,29 @@ BEGIN
         WAIT FOR clk_period/2;
     END PROCESS;
 
-    -- Stimulus process
     stim_proc : PROCESS
     BEGIN
-        -- Reset system
+        -- Reset the system
         reset <= '1';
-        WAIT FOR clk_period * 2;
+        WAIT FOR 20 ns;
         reset <= '0';
-        WAIT FOR clk_period * 2;
 
-        -- Apply initial request (no floor selected)
-        request <= "0000";
-        WAIT FOR clk_period * 10;
+        -- Scenario 1: Request floor 7
+        request <= "0111";
+        WAIT FOR 10 ns;
 
-        -- Request floor 2
-        request <= "0010";
-        WAIT FOR clk_period * 20;
-
-        -- Request floor 1
-        request <= "0001";
-        WAIT FOR clk_period * 20;
-
-        -- Request floor 3
+        -- Scenario 2: Request floor 3 (should be the next floor to go to then the elevator will go to floor 7)
         request <= "0011";
-        WAIT FOR clk_period * 20;
+        WAIT FOR 100 ns;
 
-        -- Simulate multiple floors requested in succession
-        request <= "0100";
-        WAIT FOR clk_period * 30;
+        -- Scenario 3: Request floor 0
+        request <= "0000";
+        WAIT FOR 10 ns;
+
+        -- Scenario 4: Request floor 5 (should be the next floor to go to then the elevator will go to floor 0)
+        request <= "0101";
+        WAIT FOR 100 ns;
+
         WAIT;
     END PROCESS;
 
